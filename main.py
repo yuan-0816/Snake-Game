@@ -71,7 +71,7 @@ class TextInputBox:
                 else:
                     print(self.text)
                     self.text += event.unicode
-                     
+
 
     def update(self):
         pass
@@ -91,7 +91,7 @@ exit_button = Button(int(SCREEN_WIDTH/2 + COMPONENT_GAP), int(SCREEN_HEIGHT/2 + 
 
 
 text_input = TextInputBox(int(SCREEN_WIDTH/2 - TEXT_INPUTBOX_WIDTH/2), int(SCREEN_HEIGHT/2 - TEXT_INPUTBOX_HEIGHT), TEXT_INPUTBOX_WIDTH, TEXT_INPUTBOX_HEIGHT, 
-                          "Your name")
+                          "Sin vergüenza.")
 
 running = True
 while running:
