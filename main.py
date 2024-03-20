@@ -23,7 +23,7 @@ TEXT_INPUTBOX_HEIGHT = 50
 
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("婊子")
+pygame.display.set_caption("Snake")
 
 
 font = pygame.font.SysFont('Bauhaus 93', 30)
