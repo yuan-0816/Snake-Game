@@ -17,8 +17,10 @@ SCREEN_HEIGHT = 600
 BUTTON_WIDTH = 100
 BUTTON_HEIGHT = 50
 
-TEXT_INPUTBOX_WIDTH = 200
+TEXT_INPUTBOX_WIDTH = 220
 TEXT_INPUTBOX_HEIGHT = 50
+
+COMPONENT_GAP = 10
 
 
 
@@ -69,7 +71,7 @@ class TextInputBox:
                 else:
                     print(self.text)
                     self.text += event.unicode
-                
+                     
 
     def update(self):
         pass
@@ -81,11 +83,15 @@ class TextInputBox:
         screen.blit(text_surface, text_rect)
 
 # 创建按钮和输入框对象
-start_button = Button(int(SCREEN_HEIGHT/2), int((SCREEN_WIDTH/2)-(BUTTON_WIDTH/2)), BUTTON_WIDTH, BUTTON_HEIGHT, "START", GRAY)
-exit_button = Button(300, 200, 90, 50, "EXIT", GRAY)
+start_button = Button(int(SCREEN_WIDTH/2 - COMPONENT_GAP - BUTTON_WIDTH), int(SCREEN_HEIGHT/2 + COMPONENT_GAP), 
+                      BUTTON_WIDTH, BUTTON_HEIGHT, "START", GRAY)
+
+exit_button = Button(int(SCREEN_WIDTH/2 + COMPONENT_GAP), int(SCREEN_HEIGHT/2 + COMPONENT_GAP), 
+                     BUTTON_WIDTH, BUTTON_HEIGHT, "EXIT", GRAY)
 
 
-text_input = TextInputBox(int(SCREEN_HEIGHT/2), int((SCREEN_WIDTH/2)-(BUTTON_WIDTH/2)), TEXT_INPUTBOX_WIDTH, TEXT_INPUTBOX_HEIGHT, "Your name")
+text_input = TextInputBox(int(SCREEN_WIDTH/2 - TEXT_INPUTBOX_WIDTH/2), int(SCREEN_HEIGHT/2 - TEXT_INPUTBOX_HEIGHT), TEXT_INPUTBOX_WIDTH, TEXT_INPUTBOX_HEIGHT, 
+                          "Your name")
 
 running = True
 while running:
