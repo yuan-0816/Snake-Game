@@ -1,16 +1,20 @@
 import pygame
 import sys
+import random
 
 pygame.init()
 
-# 定義顏色
+
+
+
+# ------------------------------------ 顏色 ------------------------------------ #
 WHITE = (255, 255, 255)
 GRAY = (128, 128, 128)
 BLACK = (0, 0, 0)
 DARK_GRAY = (30, 30, 30)
 
 
-# 设置屏幕大小
+# ----------------------------------- 物件大小 ----------------------------------- #
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 600
 
@@ -22,7 +26,16 @@ TEXT_INPUTBOX_HEIGHT = 50
 
 COMPONENT_GAP = 10
 
+# ----------------------------------- 遊戲狀態 ----------------------------------- #
+STATE_PLOT = 0
+STATE_START = 1
+STATE_RUNNING = 2
+STATE_GAME_OVER = 3
 
+
+
+
+GAME_STATE = STATE_PLOT
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Snake")
@@ -82,7 +95,16 @@ class TextInputBox:
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)
 
-# 创建按钮和输入框对象
+
+
+
+
+def init():
+    pass
+
+
+
+
 start_button = Button(int(SCREEN_WIDTH/2 - COMPONENT_GAP - BUTTON_WIDTH), int(SCREEN_HEIGHT/2 + COMPONENT_GAP), 
                       BUTTON_WIDTH, BUTTON_HEIGHT, "START", GRAY)
 
@@ -91,7 +113,7 @@ exit_button = Button(int(SCREEN_WIDTH/2 + COMPONENT_GAP), int(SCREEN_HEIGHT/2 + 
 
 
 text_input = TextInputBox(int(SCREEN_WIDTH/2 - TEXT_INPUTBOX_WIDTH/2), int(SCREEN_HEIGHT/2 - TEXT_INPUTBOX_HEIGHT), TEXT_INPUTBOX_WIDTH, TEXT_INPUTBOX_HEIGHT, 
-                          "Sin vergüenza.")
+                          "Your name")
 
 running = True
 while running:
