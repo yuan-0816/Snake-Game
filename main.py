@@ -3,21 +3,14 @@ import sys
 import random
 from config import *
 
-pygame.init()
 
 
-"1_1_alonso_quijano.jpg"
-
-
-
-
-GAME_STATE = STATE_PLOT
-
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Snake")
-
-
-font = pygame.font.SysFont('Bauhaus 93', 30)
+def Genrate_Food(food_dict:dict) -> str:
+    
+    food_list = list(food_dict.keys())
+    random_food = random.choice(food_list)
+    food_image_path = food_dict[random_food]
+    return food_image_path
 
 
 class Button:
@@ -55,11 +48,10 @@ class TextInputBox:
                 if event.key == pygame.K_RETURN:
                     self.active = False
                 elif event.key == pygame.K_BACKSPACE:
-                    print(self.text)
                     self.text = self.text[:-1]
                 else:
-                    print(self.text)
-                    self.text += event.unicode
+                    if len(self.text) < 10:  # 增加這一行來限制字數
+                        self.text += event.unicode
 
 
     def update(self):
@@ -73,10 +65,17 @@ class TextInputBox:
 
 
 
+pygame.init()
+
+GAME_STATE = STATE_PLOT
+
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Snake")
 
 
-def init():
-    pass
+font = pygame.font.SysFont('Bauhaus 93', 30)
+
+
 
 
 
@@ -91,33 +90,50 @@ exit_button = Button(int(SCREEN_WIDTH/2 + COMPONENT_GAP), int(SCREEN_HEIGHT/2 + 
 text_input = TextInputBox(int(SCREEN_WIDTH/2 - TEXT_INPUTBOX_WIDTH/2), int(SCREEN_HEIGHT/2 - TEXT_INPUTBOX_HEIGHT), TEXT_INPUTBOX_WIDTH, TEXT_INPUTBOX_HEIGHT, 
                           "Your name")
 
-running = True
-while running:
-    screen.fill(DARK_GRAY)  # 清空畫面並設定背景色
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        text_input.handle_event(event)
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if exit_button.is_clicked(event.pos):
+#  TODO: 寫遊戲流程
+def test_main():
+    game_state = STATE_LOGIN
+    while True:
+        if game_state == STATE_LOGIN:
+            print("登录界面")
+
+        elif game_state == STATE_RUNNING:
+            while True:
+                pass    
+
+def main():
+    GameState = STATE_PLOT
+    running = True
+    while running:
+        screen.fill(DARK_GRAY)  # 清空畫面並設定背景色
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 running = False
-            if start_button.is_clicked(event.pos):
-                print("开始游戏")
-                print("玩家名称:", text_input.text)
+            text_input.handle_event(event)
 
-    start_button.draw(screen)
-    exit_button.draw(screen)
-    text_input.draw(screen)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if exit_button.is_clicked(event.pos):
+                    running = False
+                if start_button.is_clicked(event.pos):
+                    print("开始游戏")
+                    print("玩家名称:", text_input.text)
+                    
 
-    pygame.display.flip()  # 更新畫面
+        start_button.draw(screen)
+        exit_button.draw(screen)
+        text_input.draw(screen)
 
-pygame.quit()
-sys.exit()
+        pygame.display.flip()  # 更新畫面
+
+    pygame.quit()
+    sys.exit()
 
 
 
 
 if __name__ == '__main__':
-    pass
+    main()
+    

@@ -19,18 +19,20 @@ TEXT_INPUTBOX_HEIGHT = 50
 
 COMPONENT_GAP = 10
 
+BLOCK_SIZE = 20
+
 # ----------------------------------- 遊戲狀態 ----------------------------------- #
-STATE_PLOT = 0
-STATE_START = 1
-STATE_RUNNING = 2
-STATE_GAME_OVER = 3
+STATE_LOGIN = 0
+STATE_RUNNING = 1
+STATE_GAME_OVER = 2
 
 
-# ----------------------------------- 玩家名稱 ----------------------------------- #
-PLAYER_NAME = "YUAN"
+# ----------------------------------- 玩家名稱 ------------------------------------ #
+PLAYER_NAME = "Juan"
 
 
-# ------------------------------------ 故事 ------------------------------------ #
+
+# ----------------------------------- 關卡和食物 ---------------------------------- #
 class Recap:
     story = '''
             Érase una vez, Alonso Quijano, un hidalgo a quien le encantaba leer novelas de caballerías, 
@@ -41,6 +43,7 @@ class Recap:
             se marcharon en busca de aventuras. ¿{PLAYER_NAME}, estás listo/a para realizar viajes más insólito con él? ¡Vámonos!
             '''
 
+
 class Level1:
     title = "Primera prueba: Preparación"
     story = '''
@@ -48,20 +51,43 @@ class Level1:
             ¡Conozcamos a algunos de los personajes principales de la historia 
             y los objetos que deben preparar antes de la partida!
             '''
-    object = [
-                "Alonso Quijano",         # 唐吉軻德
-                "armadura",               # 盔甲
-                "caballo Rocinante",      # 馬
-                "lanza",                  # 長矛
-                "escudero",               # 隨從
-                "novela de caballerías",  # 騎士小說
-                "Dulcinea del Toboso",    # 一個女的
-                "Asno Rucio",             # 驢子
-                "alforjas",               # 馬鞍掛袋
-                "ventero"                 # 客棧主人
-              ]
-
     
+    food = {
+                "Alonso Quijano": "./material/food.png",           # 唐吉軻德
+                "armadura": "./material/food.png",                 # 盔甲
+                "caballo Rocinante": "./material/food.png",        # 馬
+                "lanza": "./material/food.png",                    # 長矛
+                "escudero": "./material/food.png",                 # 隨從
+                "novela de caballerías": "./material/food.png",    # 騎士小說
+                "Dulcinea del Toboso": "./material/food.png",      # 一個女的
+                "Asno Rucio": "./material/food.png",               # 驢子
+                "alforjas": "./material/food.png",                 # 馬鞍掛袋
+            }
+    
+
+class Level2:
+    title = "Segunda prueba: La aventura de los molinos de viento"
+    story = '''
+            Don Quijote se prepara para emprender sus aventuras 
+            ¡Conozcamos a algunos de los personajes principales de la historia 
+            y los objetos que deben preparar antes de la partida!
+            '''
+    
+    food = {
+                "Alonso Quijano": "./material/food.png",           # 唐吉軻德
+                "armadura": "./material/food.png",                 # 盔甲
+                "caballo Rocinante": "./material/food.png",        # 馬
+                "lanza": "./material/food.png",                    # 長矛
+                "escudero": "./material/food.png",                 # 隨從
+                "novela de caballerías": "./material/food.png",    # 騎士小說
+                "Dulcinea del Toboso": "./material/food.png",      # 一個女的
+                "Asno Rucio": "./material/food.png",               # 驢子
+                "alforjas": "./material/food.png",                 # 馬鞍掛袋
+            }
+    
+
+
+# ---------------------------------- Method ---------------------------------- #
     
               
 
