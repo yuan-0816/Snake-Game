@@ -1,36 +1,12 @@
 import pygame
 import sys
 import random
+from config import *
 
 pygame.init()
 
 
-
-
-# ------------------------------------ 顏色 ------------------------------------ #
-WHITE = (255, 255, 255)
-GRAY = (128, 128, 128)
-BLACK = (0, 0, 0)
-DARK_GRAY = (30, 30, 30)
-
-
-# ----------------------------------- 物件大小 ----------------------------------- #
-SCREEN_WIDTH = 700
-SCREEN_HEIGHT = 600
-
-BUTTON_WIDTH = 100
-BUTTON_HEIGHT = 50
-
-TEXT_INPUTBOX_WIDTH = 220
-TEXT_INPUTBOX_HEIGHT = 50
-
-COMPONENT_GAP = 10
-
-# ----------------------------------- 遊戲狀態 ----------------------------------- #
-STATE_PLOT = 0
-STATE_START = 1
-STATE_RUNNING = 2
-STATE_GAME_OVER = 3
+"1_1_alonso_quijano.jpg"
 
 
 
