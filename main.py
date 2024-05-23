@@ -4,9 +4,8 @@ import random
 from config import *
 
 
+def Genrate_Food(food_dict: dict) -> str:
 
-def Genrate_Food(food_dict:dict) -> str:
-    
     food_list = list(food_dict.keys())
     random_food = random.choice(food_list)
     food_image_path = food_dict[random_food]
@@ -14,14 +13,15 @@ def Genrate_Food(food_dict:dict) -> str:
 
 
 class Button:
-    def __init__(self, x, y, width, height, text, color):
+    def __init__(self, x, y, width, height, text, color, font):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.color = color
+        self.font = font
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)
-        text_surface = font.render(self.text, True, WHITE)
+        text_surface = self.font.render(self.text, True, WHITE)
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)
 
@@ -30,16 +30,17 @@ class Button:
 
 
 class TextInputBox:
-    def __init__(self, x, y, width, height, text=''):
+    def __init__(self, x, y, width, height, text="", font=None):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.active = False
+        self.font = font
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
                 self.active = not self.active
-                if self.text=="Your name":
+                if self.text == "Your name":
                     self.text = ""
             else:
                 self.active = False
@@ -53,78 +54,183 @@ class TextInputBox:
                     if len(self.text) < 10:  # 增加這一行來限制字數
                         self.text += event.unicode
 
-
     def update(self):
         pass
 
     def draw(self, screen):
         pygame.draw.rect(screen, GRAY if self.active else DARK_GRAY, self.rect)
-        text_surface = font.render(self.text, True, WHITE)
+        text_surface = self.font.render(self.text, True, WHITE)
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)
+
+
+class TextRenderer:
+    def __init__(self, x, y, width, height, font, text_color=(0, 0, 0), bg_color=None):
+        pygame.font.init()
+        self.font = font
+        self.text_color = text_color
+        self.bg_color = bg_color
+        self.rect = pygame.Rect(x, y, width, height)
+
+
+    def draw_text(self, screen, text, aa=False):
+        """
+        Draw text on the screen with word wrapping.
+        """
+        y = self.rect.top
+        line_spacing = -2
+
+        # Get the height of the font
+        font_height = self.font.size("Tg")[1]
+
+        while text:
+            i = 1
+
+            # Determine if the row of text will be outside our area
+            if y + font_height > self.rect.bottom:
+                break
+
+            # Determine maximum width of line
+            while self.font.size(text[:i])[0] < self.rect.width and i < len(text):
+                i += 1
+
+            # If we've wrapped the text, then adjust the wrap to the last word
+            if i < len(text):
+                i = text.rfind(" ", 0, i) + 1
+
+            # Render the line and blit it to the screen
+            if self.bg_color:
+                image = self.font.render(text[:i], 1, self.text_color, self.bg_color)
+                image.set_colorkey(self.bg_color)
+            else:
+                image = self.font.render(text[:i], aa, self.text_color)
+
+            screen.blit(image, (self.rect.left, y))
+            y += font_height + line_spacing
+
+            # Remove the text we just blitted
+            text = text[i:]
+
 
 
 
 pygame.init()
 
-GAME_STATE = STATE_PLOT
-
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Snake")
 
-
-font = pygame.font.SysFont('Bauhaus 93', 30)
-
-
+font_title = pygame.font.SysFont("Rockwell Condensed", 45)
+font_story = pygame.font.SysFont("Rockwell Condensed", 30)
 
 
+game_state = STATE_LOGIN
+start_button = Button(
+    int(SCREEN_WIDTH / 2 - COMPONENT_GAP - BUTTON_WIDTH),
+    int(SCREEN_HEIGHT / 2 + COMPONENT_GAP),
+    BUTTON_WIDTH,
+    BUTTON_HEIGHT,
+    "START",
+    GRAY,
+    font_title,
+)
+
+exit_button = Button(
+    int(SCREEN_WIDTH / 2 + COMPONENT_GAP),
+    int(SCREEN_HEIGHT / 2 + COMPONENT_GAP),
+    BUTTON_WIDTH,
+    BUTTON_HEIGHT,
+    "EXIT",
+    GRAY,
+    font_title,
+)
+
+text_input = TextInputBox(
+    int(SCREEN_WIDTH / 2 - TEXT_INPUTBOX_WIDTH / 2),
+    int(SCREEN_HEIGHT / 2 - TEXT_INPUTBOX_HEIGHT),
+    TEXT_INPUTBOX_WIDTH,
+    TEXT_INPUTBOX_HEIGHT,
+    "Your name",
+    font_title,
+)
 
 
-start_button = Button(int(SCREEN_WIDTH/2 - COMPONENT_GAP - BUTTON_WIDTH), int(SCREEN_HEIGHT/2 + COMPONENT_GAP), 
-                      BUTTON_WIDTH, BUTTON_HEIGHT, "START", GRAY)
 
-exit_button = Button(int(SCREEN_WIDTH/2 + COMPONENT_GAP), int(SCREEN_HEIGHT/2 + COMPONENT_GAP), 
-                     BUTTON_WIDTH, BUTTON_HEIGHT, "EXIT", GRAY)
+text_renderer = TextRenderer(50, 200, SCREEN_WIDTH-50, SCREEN_HEIGHT-50+200, font_story)
 
-
-text_input = TextInputBox(int(SCREEN_WIDTH/2 - TEXT_INPUTBOX_WIDTH/2), int(SCREEN_HEIGHT/2 - TEXT_INPUTBOX_HEIGHT), TEXT_INPUTBOX_WIDTH, TEXT_INPUTBOX_HEIGHT, 
-                          "Your name")
+# 設置文字矩形區域
 
 
 
-#  TODO: 寫遊戲流程
-def test_main():
-    game_state = STATE_LOGIN
-    while True:
-        if game_state == STATE_LOGIN:
-            print("登录界面")
 
-        elif game_state == STATE_RUNNING:
-            while True:
-                pass    
+
+def Login(event):
+
+    global game_state
+    screen.fill(DARK_GRAY)
+
+    text_input.handle_event(event)
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if exit_button.is_clicked(event.pos):
+            game_state = STATE_QUIT
+        if start_button.is_clicked(event.pos):
+            game_state = STATE_STORY
+
+    start_button.draw(screen)
+    exit_button.draw(screen)
+    text_input.draw(screen)
+
+
+def Story(event, Level_class):
+    screen.fill(GRAY)
+
+    TextInputBox(
+        COMPONENT_GAP,
+        COMPONENT_GAP,
+        SCREEN_WIDTH - 2 * COMPONENT_GAP,
+        100,
+        Level_class.title,
+        font_title,
+    ).draw(screen)
+
+    # TextInputBox(
+    #     COMPONENT_GAP,
+    #     130 + COMPONENT_GAP,
+    #     SCREEN_WIDTH - 2 * COMPONENT_GAP,
+    #     350,
+    #     Level_class.story,
+    #     font_story,
+    # ).draw(screen)
+    text_renderer.draw_text(screen, Recap.story)
+
+    next_button = Button(
+        int(SCREEN_WIDTH - BUTTON_WIDTH - COMPONENT_GAP),
+        int(SCREEN_HEIGHT - BUTTON_HEIGHT - COMPONENT_GAP),
+        BUTTON_WIDTH - COMPONENT_GAP,
+        BUTTON_HEIGHT - COMPONENT_GAP,
+        "NEXT",
+        LIGHT_GRAY,
+        font_title,
+    )
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if next_button.is_clicked(event.pos):
+            game_state = STATE_RUNNING
+
+    next_button.draw(screen)
+
 
 def main():
-    GameState = STATE_PLOT
-    running = True
-    while running:
-        screen.fill(DARK_GRAY)  # 清空畫面並設定背景色
-
+    global game_state
+    while game_state != STATE_QUIT:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-            text_input.handle_event(event)
+                pygame.quit()
+                sys.exit()
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if exit_button.is_clicked(event.pos):
-                    running = False
-                if start_button.is_clicked(event.pos):
-                    print("开始游戏")
-                    print("玩家名称:", text_input.text)
-                    
-
-        start_button.draw(screen)
-        exit_button.draw(screen)
-        text_input.draw(screen)
+            elif game_state == STATE_LOGIN:
+                Login(event)
+            elif game_state == STATE_STORY:
+                Story(event, Level1)
 
         pygame.display.flip()  # 更新畫面
 
@@ -132,8 +238,5 @@ def main():
     sys.exit()
 
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-    
