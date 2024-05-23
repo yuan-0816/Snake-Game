@@ -155,7 +155,7 @@ text_input = TextInputBox(
 
 
 
-text_renderer = TextRenderer(50, 200, SCREEN_WIDTH-50, SCREEN_HEIGHT-50+200, font_story)
+text_renderer = TextRenderer(50, 150, SCREEN_WIDTH-75, SCREEN_HEIGHT-50+200, font_story, bg_color=WHITE)
 
 # 設置文字矩形區域
 
@@ -192,14 +192,6 @@ def Story(event, Level_class):
         font_title,
     ).draw(screen)
 
-    # TextInputBox(
-    #     COMPONENT_GAP,
-    #     130 + COMPONENT_GAP,
-    #     SCREEN_WIDTH - 2 * COMPONENT_GAP,
-    #     350,
-    #     Level_class.story,
-    #     font_story,
-    # ).draw(screen)
     text_renderer.draw_text(screen, Recap.story)
 
     next_button = Button(
