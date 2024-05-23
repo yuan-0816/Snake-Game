@@ -36,7 +36,7 @@ class TextInputBox:
         self.active = False
         self.font = font
 
-    def handle_event(self, event):
+    def handle_event(self, event) -> str:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
                 self.active = not self.active
@@ -53,6 +53,7 @@ class TextInputBox:
                 else:
                     if len(self.text) < 10:  # 增加這一行來限制字數
                         self.text += event.unicode
+        return self.text
 
     def update(self):
         pass
@@ -155,20 +156,19 @@ text_input = TextInputBox(
 
 
 
-text_renderer = TextRenderer(50, 150, SCREEN_WIDTH-75, SCREEN_HEIGHT-50+200, font_story, bg_color=WHITE)
+text_renderer = TextRenderer(50, 150, SCREEN_WIDTH-75, SCREEN_HEIGHT-50+200, font_story)
 
-# 設置文字矩形區域
-
-
+PLAYER_NAME = None
 
 
 
 def Login(event):
 
     global game_state
+    global PLAYER_NAME
     screen.fill(DARK_GRAY)
 
-    text_input.handle_event(event)
+    PLAYER_NAME = text_input.handle_event(event)
     if event.type == pygame.MOUSEBUTTONDOWN:
         if exit_button.is_clicked(event.pos):
             game_state = STATE_QUIT
@@ -181,6 +181,7 @@ def Login(event):
 
 
 def Story(event, Level_class):
+    global game_state
     screen.fill(GRAY)
 
     TextInputBox(
@@ -192,7 +193,7 @@ def Story(event, Level_class):
         font_title,
     ).draw(screen)
 
-    text_renderer.draw_text(screen, Recap.story)
+    text_renderer.draw_text(screen, Recap.story.format(PLAYER_NAME=PLAYER_NAME))
 
     next_button = Button(
         int(SCREEN_WIDTH - BUTTON_WIDTH - COMPONENT_GAP),
@@ -222,7 +223,9 @@ def main():
             elif game_state == STATE_LOGIN:
                 Login(event)
             elif game_state == STATE_STORY:
-                Story(event, Level1)
+                Story(event, Recap)
+            elif game_state == STATE_RUNNING:
+                screen.fill(GRAY)
 
         pygame.display.flip()  # 更新畫面
 
