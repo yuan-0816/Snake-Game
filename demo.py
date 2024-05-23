@@ -5,7 +5,7 @@ import random
 pygame.init()
 
 # 設置視窗大小
-WINDOW_WIDTH = 720
+WINDOW_WIDTH = 1080
 WINDOW_HEIGHT = 720
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Snake")
@@ -15,11 +15,12 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
 # 蛇的大小
-SNAKE_SIZE = 40
+SNAKE_SIZE = 20
 
 # 載入圖片並縮放
 snake_head_img = pygame.transform.scale(pygame.image.load('material/snake.png'), (SNAKE_SIZE, SNAKE_SIZE))
 snake_body_img = pygame.transform.scale(pygame.image.load('material/snake_body.png'), (SNAKE_SIZE, SNAKE_SIZE))
+snake_tail_img = pygame.transform.scale(pygame.image.load('material/snake_tail.png'), (SNAKE_SIZE, SNAKE_SIZE))
 food_img = pygame.transform.scale(pygame.image.load('material/food.png'), (SNAKE_SIZE, SNAKE_SIZE))
 
 # 蛇類別
@@ -43,6 +44,8 @@ class Snake:
         for i, segment in enumerate(self.body):
             if i == 0:
                 rotated_img = self.get_rotated_image(snake_head_img, segment[2])
+            elif i == len(self.body) - 1:
+                rotated_img = self.get_rotated_image(snake_tail_img, segment[2])
             else:
                 rotated_img = self.get_rotated_image(snake_body_img, segment[2])
             WINDOW.blit(rotated_img, (segment[0], segment[1]))
