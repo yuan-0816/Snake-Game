@@ -139,7 +139,16 @@ class Level5:
             """
 
     food = {
-         
+        "playa de Barcelona": "./material/food/5_1_playa_de_Barcelona.png",  # 巴塞隆納海邊  
+        "bachiller Sansón Carrasco": "./material/food/5_2_bachiller_Sanson_Carrasco.png",  # 學士
+        "caballero de la Blanca Luna": "./material/food/5_3_caballero_de_la_Blanca_Luna.png",  # 白月騎士
+        "duelo": "./material/food/5_4_duelo.png",  # 決鬥
+        "escudo": "./material/food/5_5_escudo.png",  # 盾牌
+        "herencia": "./material/food/5_6_herencia.png",  # 遺產
+        "derrota": "./material/food/5_7_derrota.png",  # 失敗
+        "tristeza": "./material/food/5_8_tristeza.png",  # 難過
+        "testamento": "./material/food/5_9_testamento.png",  # 遺書
+        "muerte": "./material/food/5_10_muerte.png",  # 死
     }
 
 
