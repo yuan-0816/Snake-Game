@@ -121,8 +121,8 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Snake")
 
 font_title = pygame.font.SysFont("Rockwell Condensed", 45)
-# font_story = pygame.font.SysFont("Rockwell Condensed", 30)
-font_story = pygame.font.SysFont("Viner Hand ITC", 23)
+font_story = pygame.font.SysFont("Rockwell Condensed", 30)
+# font_story = pygame.font.SysFont("Viner Hand ITC", 26)
 
 
 
@@ -226,7 +226,7 @@ def main():
             elif game_state == STATE_LOGIN:
                 Login(event)
             elif game_state == STATE_STORY:
-                Story(event, Recap)
+                Story(event, Level2)
             elif game_state == STATE_RUNNING:
                 screen.fill(GRAY)
 
