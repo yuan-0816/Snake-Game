@@ -214,7 +214,6 @@ def Story(event, Level_class):
 
     next_button.draw(screen)
 
-+
 def main():
     global game_state
     while game_state != STATE_QUIT:

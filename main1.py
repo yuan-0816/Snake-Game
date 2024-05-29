@@ -285,6 +285,8 @@ def Game():
     head_img = pygame.image.load('./material/snake.png')
     body_img = pygame.image.load('./material/snake_body.png')
     tail_img = pygame.image.load('./material/snake_tail.png')
+
+    
     food_img_path = Genrate_Food(LEVELS[CURRENT_LEVEL].food)
     food_img = pygame.image.load(food_img_path)
 
@@ -319,7 +321,7 @@ def Game():
             running = False
 
         screen.fill(BLACK)
-        snake.draw(screen, head_img, body_img, tail_img)
+        snake.draw(screen, Level1.food['Alonso Quijano'], body_img, tail_img)
         food.draw(screen)
         pygame.display.flip()
         clock.tick(10)
