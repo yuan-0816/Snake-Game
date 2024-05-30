@@ -5,8 +5,8 @@ import random
 pygame.init()
 
 # 設置視窗大小
-WINDOW_WIDTH = 1920
-WINDOW_HEIGHT = 1080
+WINDOW_WIDTH = 1000
+WINDOW_HEIGHT = 800
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Snake")
 
@@ -15,7 +15,7 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
 # 蛇的大小
-SNAKE_SIZE = 30
+SNAKE_SIZE = 50
 
 # 載入圖片並縮放
 snake_head_img = pygame.transform.scale(pygame.image.load('material/snake.png'), (SNAKE_SIZE, SNAKE_SIZE))

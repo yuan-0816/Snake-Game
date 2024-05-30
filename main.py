@@ -1,141 +1,35 @@
 import pygame
-import sys
 import random
+import sys
 from config import *
 
-
-def Genrate_Food(food_dict: dict) -> str:
-
-    food_list = list(food_dict.keys())
-    random_food = random.choice(food_list)
-    food_image_path = food_dict[random_food]
-    return food_image_path
-
-
-class Button:
-    def __init__(self, x, y, width, height, text, color, font):
-        self.rect = pygame.Rect(x, y, width, height)
-        self.text = text
-        self.color = color
-        self.font = font
-
-    def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
-        text_surface = self.font.render(self.text, True, WHITE)
-        text_rect = text_surface.get_rect(center=self.rect.center)
-        screen.blit(text_surface, text_rect)
-
-    def is_clicked(self, pos):
-        return self.rect.collidepoint(pos)
-
-
-class TextInputBox:
-    def __init__(self, x, y, width, height, text="", font=None):
-        self.rect = pygame.Rect(x, y, width, height)
-        self.text = text
-        self.active = False
-        self.font = font
-
-    def handle_event(self, event) -> str:
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.rect.collidepoint(event.pos):
-                self.active = not self.active
-                if self.text == "Your name":
-                    self.text = ""
-            else:
-                self.active = False
-        if event.type == pygame.KEYDOWN:
-            if self.active:
-                if event.key == pygame.K_RETURN:
-                    self.active = False
-                elif event.key == pygame.K_BACKSPACE:
-                    self.text = self.text[:-1]
-                else:
-                    if len(self.text) < 10:  # 增加這一行來限制字數
-                        self.text += event.unicode
-        return self.text
-
-    def update(self):
-        pass
-
-    def draw(self, screen):
-        pygame.draw.rect(screen, GRAY if self.active else DARK_GRAY, self.rect)
-        text_surface = self.font.render(self.text, True, WHITE)
-        text_rect = text_surface.get_rect(center=self.rect.center)
-        screen.blit(text_surface, text_rect)
-
-
-class TextRenderer:
-    def __init__(self, x, y, width, height, font, text_color=(0, 0, 0), bg_color=None):
-        pygame.font.init()
-        self.font = font
-        self.text_color = text_color
-        self.bg_color = bg_color
-        self.rect = pygame.Rect(x, y, width, height)
-
-
-    def draw_text(self, screen, text, aa=False):
-        """
-        Draw text on the screen with word wrapping.
-        """
-        y = self.rect.top
-        line_spacing = -2
-
-        # Get the height of the font
-        font_height = self.font.size("Tg")[1]
-
-        while text:
-            i = 1
-
-            # Determine if the row of text will be outside our area
-            if y + font_height > self.rect.bottom:
-                break
-
-            # Determine maximum width of line
-            while self.font.size(text[:i])[0] < self.rect.width and i < len(text):
-                i += 1
-
-            # If we've wrapped the text, then adjust the wrap to the last word
-            if i < len(text):
-                i = text.rfind(" ", 0, i) + 1
-
-            # Render the line and blit it to the screen
-            if self.bg_color:
-                image = self.font.render(text[:i], 1, self.text_color, self.bg_color)
-                image.set_colorkey(self.bg_color)
-            else:
-                image = self.font.render(text[:i], aa, self.text_color)
-
-            screen.blit(image, (self.rect.left, y))
-            y += font_height + line_spacing
-
-            # Remove the text we just blitted
-            text = text[i:]
-
-
-
+level_list = [Recap, Level1, Level2, Level3, Level4, Level5, Conclusion]
 
 pygame.init()
 
+# 設置螢幕和時鐘
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Snake")
+clock = pygame.time.Clock()
 
-font_title = pygame.font.SysFont("Rockwell Condensed", 45)
-font_story = pygame.font.SysFont("Rockwell Condensed", 30)
-# font_story = pygame.font.SysFont("Viner Hand ITC", 26)
+# 字體設置
+font_title = pygame.font.Font("./material/YatraOne_Regular.ttf", 45)
+font_story = pygame.font.Font("./material/YatraOne_Regular.ttf", 30)
+font_infor = pygame.font.Font("./material/YatraOne_Regular.ttf", 23)
 
+# 文本渲染器
+title_render = TextRenderer(INTRO_GAP, INTRO_GAP*2, TITLE_WIDTH, TITLE_HEIGHT, font_title)
+story_render = TextRenderer(INTRO_GAP, INTRO_GAP*2+TITLE_HEIGHT, STORY_WIDTH, STORY_HEIGHT, font_story)
+next_level_render = TextRenderer(SCREEN_WIDTH - NEXT_LEVEL_WIDTH, SCREEN_HEIGHT - NEXT_LEVEL_HEIGHT, NEXT_LEVEL_WIDTH, NEXT_LEVEL_HEIGHT, font_infor, text_color=SILVER)
+score_render = TextRenderer(0, 0, 100, 50, font_story, text_color=BLACK)
 
-
-
-game_state = STATE_LOGIN
 start_button = Button(
     int(SCREEN_WIDTH / 2 - COMPONENT_GAP - BUTTON_WIDTH),
     int(SCREEN_HEIGHT / 2 + COMPONENT_GAP),
     BUTTON_WIDTH,
     BUTTON_HEIGHT,
-    "START",
+    "EMPEZAR",
     GRAY,
-    font_title,
+    font_story,
 )
 
 exit_button = Button(
@@ -143,9 +37,9 @@ exit_button = Button(
     int(SCREEN_HEIGHT / 2 + COMPONENT_GAP),
     BUTTON_WIDTH,
     BUTTON_HEIGHT,
-    "EXIT",
+    "SALIR",
     GRAY,
-    font_title,
+    font_story,
 )
 
 text_input = TextInputBox(
@@ -154,86 +48,226 @@ text_input = TextInputBox(
     TEXT_INPUTBOX_WIDTH,
     TEXT_INPUTBOX_HEIGHT,
     "Your name",
-    font_title,
+    font_story,
 )
 
+# 蛇類別
+class Snake:
+    def __init__(self):
+        self.size = SNAKE_SIZE
+        self.body = [[SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, 'RIGHT']]
+        self.x_change = 0
+        self.y_change = 0
+        self.direction = 'RIGHT'
 
+    def move(self):
+        new_head = [self.body[0][0] + self.x_change, self.body[0][1] + self.y_change, self.direction]
+        self.body = [new_head] + self.body[:-1]
 
-text_renderer = TextRenderer(50, 150, SCREEN_WIDTH-75, SCREEN_HEIGHT-50+200, font_story)
+    def grow(self):
+        tail = self.body[-1]
+        self.body.append(tail)
 
-PLAYER_NAME = None
+    def draw(self):
+        for i, segment in enumerate(self.body):
+            if i == 0:
+                rotated_img = self.get_rotated_image(snake_head_img, segment[2])
+            elif i == len(self.body) - 1:
+                rotated_img = self.get_rotated_image(snake_tail_img, segment[2])
+            else:
+                rotated_img = self.get_rotated_image(snake_body_img, segment[2])
+            screen.blit(rotated_img, (segment[0], segment[1]))
 
+    def get_rotated_image(self, img, direction):
+        if direction == 'LEFT':
+            return pygame.transform.rotate(img, 90)
+        elif direction == 'RIGHT':
+            return pygame.transform.rotate(img, -90)
+        elif direction == 'UP':
+            return pygame.transform.rotate(img, 0)
+        elif direction == 'DOWN':
+            return pygame.transform.rotate(img, 180)
 
+    def get_rect(self):
+        return pygame.Rect(self.body[0][0], self.body[0][1], self.size, self.size)
 
-def Login(event):
+    def check_collision(self):
+        head = self.body[0]
+        for segment in self.body[1:]:
+            if head[0] == segment[0] and head[1] == segment[1]:
+                return True
+        return False
 
-    global game_state
-    global PLAYER_NAME
-    screen.fill(DARK_GRAY)
+    def update_direction(self, x_change, y_change, direction):
+        self.x_change = x_change
+        self.y_change = y_change
+        self.direction = direction
+        self.body[0][2] = direction
 
-    PLAYER_NAME = text_input.handle_event(event)
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if exit_button.is_clicked(event.pos):
-            game_state = STATE_QUIT
-        if start_button.is_clicked(event.pos):
-            game_state = STATE_STORY
+# 食物類別
+class Food:
+    def __init__(self, snake_body):
+        self.size = SNAKE_SIZE
+        self.x, self.y = self.random_position(snake_body)
 
-    start_button.draw(screen)
-    exit_button.draw(screen)
-    text_input.draw(screen)
+    def random_position(self, snake_body):
+        while True:
+            x = random.randint(0, (SCREEN_WIDTH - self.size) // SNAKE_SIZE) * SNAKE_SIZE
+            y = random.randint(0, (SCREEN_HEIGHT - self.size) // SNAKE_SIZE) * SNAKE_SIZE
+            if [x, y, ''] not in snake_body:
+                return x, y
 
+    def draw(self):
+        screen.blit(food_img, (self.x, self.y))
 
-def Story(event, Level_class):
-    global game_state
-    screen.fill(GRAY)
+    def get_rect(self):
+        return pygame.Rect(self.x, self.y, self.size, self.size)
 
-    TextInputBox(
-        COMPONENT_GAP,
-        COMPONENT_GAP,
-        SCREEN_WIDTH - 2 * COMPONENT_GAP,
-        100,
-        Level_class.title,
-        font_title,
-    ).draw(screen)
+def message(msg, color, position):
+    mesg = font_title.render(msg, True, color)
+    screen.blit(mesg, position)
 
-    text_renderer.draw_text(screen, Recap.story.format(PLAYER_NAME=PLAYER_NAME))
+def draw_snake(snake_block, snake_list):
+    for segment in snake_list:
+        pygame.draw.rect(screen, BLACK, [segment[0], segment[1], snake_block, snake_block])
 
-    next_button = Button(
-        int(SCREEN_WIDTH - BUTTON_WIDTH - COMPONENT_GAP),
-        int(SCREEN_HEIGHT - BUTTON_HEIGHT - COMPONENT_GAP),
-        BUTTON_WIDTH - COMPONENT_GAP,
-        BUTTON_HEIGHT - COMPONENT_GAP,
-        "NEXT",
-        LIGHT_GRAY,
-        font_title,
-    )
-
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if next_button.is_clicked(event.pos):
-            game_state = STATE_RUNNING
-
-    next_button.draw(screen)
-
-def main():
-    global game_state
-    while game_state != STATE_QUIT:
+def game_intro(level, player_name="Player"):
+    print(level_list[level])
+    intro = True
+    while intro:
+        screen.fill(GRAY)
+        title_render.draw_text(screen, level_list[level].title)
+        story_render.draw_text(screen, level_list[level].story.format(PLAYER_NAME=player_name))
+        next_level_render.draw_text(screen, "presione cualquier botón") # press any key to continue
         for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                intro = False
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        pygame.display.update()
+
+def login():
+    login = True
+    player_name = ""
+    while login:
+        screen.fill(DARK_GRAY)
+        for event in pygame.event.get():
+            player_name = text_input.handle_event(event)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if exit_button.is_clicked(event.pos):
+                    pygame.quit()
+                    sys.exit()
+                if start_button.is_clicked(event.pos):
+                    login = False
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-            elif game_state == STATE_LOGIN:
-                Login(event)
-            elif game_state == STATE_STORY:
-                Story(event, Level2)
-            elif game_state == STATE_RUNNING:
-                screen.fill(GRAY)
+        start_button.draw(screen)
+        exit_button.draw(screen)
+        text_input.draw(screen)
+        pygame.display.update()
+    return player_name
 
-        pygame.display.flip()  # 更新畫面
+def generate_position(snake_body):
+    while True:
+        x = random.randint(0, (SCREEN_WIDTH - SNAKE_SIZE) // SNAKE_SIZE) * SNAKE_SIZE
+        y = random.randint(0, (SCREEN_HEIGHT - SNAKE_SIZE) // SNAKE_SIZE) * SNAKE_SIZE
+        if [x, y, ''] not in snake_body:
+            return x, y
+
+def game_loop():
+    game_over = False
+    game_close = False
+    level = 0
+
+    snake = Snake()
+    food = Food(snake.body)
+    bomb = Food(snake.body)
+
+    score = 0
+    player_name = login()
+    game_intro(level, player_name)
+    level += 1
+    game_intro(level, player_name)
+
+    while not game_over:
+        while game_close:
+            screen.fill(LIGHT_GRAY)
+            story_render.draw_text(screen, "Desafortunadamente, x prueba fracasada.:( ¿Te gustaría retomar tu aventura con Don Quijote?")
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        game_over = True
+                        game_close = False
+                    elif event.key == pygame.K_c:
+                        game_loop()
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over = True
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    snake.update_direction(-SNAKE_SIZE, 0, 'LEFT')
+                elif event.key == pygame.K_RIGHT:
+                    snake.update_direction(SNAKE_SIZE, 0, 'RIGHT')
+                elif event.key == pygame.K_UP:
+                    snake.update_direction(0, -SNAKE_SIZE, 'UP')
+                elif event.key == pygame.K_DOWN:
+                    snake.update_direction(0, SNAKE_SIZE, 'DOWN')
+
+        if snake.body[0][0] >= SCREEN_WIDTH or snake.body[0][0] < 0 or snake.body[0][1] >= SCREEN_HEIGHT or snake.body[0][1] < 0:
+            game_close = True
+
+        snake.move()
+        screen.fill(LIGHT_GRAY)
+        food.draw()
+        bomb.draw()
+
+        if snake.check_collision():
+            game_close = True
+
+        for segment in snake.body:
+            if segment[0] == bomb.x and segment[1] == bomb.y:
+                bomb = Food(snake.body)
+                score -= 2
+
+        if snake.body[0][0] == food.x and snake.body[0][1] == food.y:
+            food = Food(snake.body)
+            snake.grow()
+            score += 1
+
+        snake.draw()
+        score_render.draw_text(screen, "Score:" + str(score))
+        pygame.display.update()
+
+        if score >= 5:
+            level += 1
+            if level > 5:
+                game_intro(6)
+                pygame.time.delay(3000)
+                game_over = True
+            else:
+                game_intro(level)
+                snake = Snake()
+                food = Food(snake.body)
+                bomb = Food(snake.body)
+                score = 0
+
+        if score <= -5:
+            game_close = True
+
+        clock.tick(FPS)
 
     pygame.quit()
     sys.exit()
 
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    game_loop()
