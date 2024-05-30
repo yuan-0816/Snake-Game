@@ -69,6 +69,8 @@ class Level1:
         "ventero": pygame.image.load("./material/food/1_10_ventero.png"),                               # 客棧主人
     }
 
+    
+
     food = [
         "Alonso Quijano",
         "armadura",

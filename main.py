@@ -58,15 +58,15 @@ text_input = TextInputBox(
 class Snake:
     def __init__(self):
         self.size = BLOCK_SIZE
-        self.body = [[SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, 'RIGHT']]
+        self.body = [[SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, None]]
         self.x_change = 0
         self.y_change = 0
-        self.direction = 'RIGHT'
-        # self.grow()
+        self.direction = None
 
     def move(self):
-        new_head = [self.body[0][0] + self.x_change, self.body[0][1] + self.y_change, self.direction]
-        self.body = [new_head] + self.body[:-1]
+        if self.direction:
+            new_head = [self.body[0][0] + self.x_change, self.body[0][1] + self.y_change, self.direction]
+            self.body = [new_head] + self.body[:-1]
 
     def grow(self):
         tail = self.body[-1]
@@ -106,6 +106,21 @@ class Snake:
         self.y_change = y_change
         self.direction = direction
         self.body[0][2] = direction
+    
+    def can_change_direction(self, new_direction):
+        if self.direction is None:
+            return True
+        if new_direction == 'LEFT' and self.direction != 'RIGHT':
+            return True
+        if new_direction == 'RIGHT' and self.direction != 'LEFT':
+            return True
+        if new_direction == 'UP' and self.direction != 'DOWN':
+            return True
+        if new_direction == 'DOWN' and self.direction != 'UP':
+            return True
+        return False
+
+
 
 # 食物類別
 class Food:
@@ -113,7 +128,6 @@ class Food:
         self.size = BLOCK_SIZE
         self.level = level
         self.foods = self.generate_foods(snake_body)
-
     def generate_foods(self, snake_body):
         foods = []
         while len(foods) < 10:
@@ -199,11 +213,9 @@ def generate_position() -> tuple:
 
 
 def game_loop():
-    game_over = False
+    game_over = Falsellll
     game_close = False
     level = 0
-
-
     score = 0
 
     player_name = login()
@@ -230,17 +242,26 @@ def game_loop():
                     pygame.quit()
                     sys.exit()
 
-        for event in pygame.event.get():
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if (event.key == pygame.K_LEFT and snake.direction == 'LEFT') or \
+                   (event.key == pygame.K_RIGHT and snake.direction == 'RIGHT') or \
+                   (event.key == pygame.K_UP and snake.direction == 'UP') or \
+                   (event.key == pygame.K_DOWN and snake.direction == 'DOWN'):
+                    pygame.event.clear(event.type)
+
+        for event in events:
             if event.type == pygame.QUIT:
                 game_over = True
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT and snake.x_change == 0:
+                if event.key == pygame.K_LEFT and snake.can_change_direction('LEFT'):
                     snake.update_direction(-snake.size, 0, 'LEFT')
-                elif event.key == pygame.K_RIGHT and snake.x_change == 0:
+                elif event.key == pygame.K_RIGHT and snake.can_change_direction('RIGHT'):
                     snake.update_direction(snake.size, 0, 'RIGHT')
-                elif event.key == pygame.K_UP and snake.y_change == 0:
+                elif event.key == pygame.K_UP and snake.can_change_direction('UP'):
                     snake.update_direction(0, -snake.size, 'UP')
-                elif event.key == pygame.K_DOWN and snake.y_change == 0:
+                elif event.key == pygame.K_DOWN and snake.can_change_direction('DOWN'):
                     snake.update_direction(0, snake.size, 'DOWN')
 
         snake.move()
@@ -264,10 +285,7 @@ def game_loop():
         snake.draw()
         food.draw()
 
-
-
         score_render.draw_text(screen, "Score:" + str(score))
-        # target_food_render.draw_text(screen, "Target Food:" + food.name)
         pygame.display.update()
 
         if score >= 2:
