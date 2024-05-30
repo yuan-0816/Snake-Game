@@ -128,6 +128,8 @@ class Food:
         self.size = BLOCK_SIZE
         self.level = level
         self.foods = self.generate_foods(snake_body)
+
+
     def generate_foods(self, snake_body):
         foods = []
         while len(foods) < 10:
@@ -211,10 +213,27 @@ def generate_position() -> tuple:
     return (x, y)
 
 
+def game_over_screen():
+    while True:
+        screen.fill(LIGHT_GRAY)
+        story_render.draw_text(screen, "Desafortunadamente, x prueba fracasada.:( ¿Te gustaría retomar tu aventura con Don Quijote?")
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    sys.exit()
+
+                elif event.key == pygame.K_c:
+                    game_loop()
+                    break
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
 def game_loop():
-    game_over = Falsellll
-    game_close = False
+    game_over = False
     level = 0
     score = 0
 
@@ -226,21 +245,7 @@ def game_loop():
     food = Food(snake.body, level_list[level])
 
     while not game_over:
-        while game_close:
-            screen.fill(LIGHT_GRAY)
-            story_render.draw_text(screen, "Desafortunadamente, x prueba fracasada.:( ¿Te gustaría retomar tu aventura con Don Quijote?")
-            pygame.display.update()
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        game_over = True
-                        game_close = False
-                    elif event.key == pygame.K_c:
-                        game_loop()
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+        
 
         events = pygame.event.get()
         for event in events:
@@ -253,7 +258,8 @@ def game_loop():
 
         for event in events:
             if event.type == pygame.QUIT:
-                game_over = True
+                pygame.quit()
+                sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT and snake.can_change_direction('LEFT'):
                     snake.update_direction(-snake.size, 0, 'LEFT')
@@ -269,7 +275,7 @@ def game_loop():
         if (snake.body[0][0] < 0 or snake.body[0][0] >= SCREEN_WIDTH or
                 snake.body[0][1] < 0 or snake.body[0][1] >= SCREEN_HEIGHT or
                 snake.check_collision()):
-            game_close = True
+            game_over_screen()
 
         for food_item in food.foods:
             if snake.get_rect().colliderect(pygame.Rect(food_item['x'], food_item['y'], food.size, food.size)):
@@ -298,8 +304,8 @@ def game_loop():
                 game_intro(level)
                 score = 0
 
-        if score <= -10:
-            game_close = True
+        if score <= -1:
+            game_over_screen()
 
         clock.tick(FPS)
 
