@@ -1,4 +1,5 @@
 import pygame
+import random
 import os
 
 # ------------------------------------ 顏色 ------------------------------------ #
@@ -16,8 +17,11 @@ LIGHT_SLATE_GRAY = (119, 136, 153)
 DARK_SLATE_GRAY = (47, 79, 79)
 
 # ----------------------------------- 物件大小 ----------------------------------- #
+
+INFO_HEIGHT = 60
+
 SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 900
+SCREEN_HEIGHT = 800 + INFO_HEIGHT
 SCREEN_CENTER = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
 
@@ -40,9 +44,6 @@ STORY_HEIGHT = 600
 
 NEXT_LEVEL_WIDTH = 300
 NEXT_LEVEL_HEIGHT = 50
-
-INFO_HEIGHT = 50
-
 
 
 BLOCK_SIZE = 50
@@ -106,7 +107,7 @@ class Level2:
     }
 
     food = [
-        "molino de viento",
+        "molinos de viento",
         "imaginación",
         "batalla",
         "gigante",
@@ -226,7 +227,7 @@ class Button:
         self.font = font
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        pygame.draw.rect(screen, self.color, self.rect, border_radius=15)
         text_surface = self.font.render(self.text, True, WHITE)
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)
@@ -265,7 +266,7 @@ class TextInputBox:
         pass
 
     def draw(self, screen):
-        pygame.draw.rect(screen, GRAY if self.active else DARK_GRAY, self.rect)
+        pygame.draw.rect(screen, GRAY if self.active else DARK_GRAY, self.rect, border_radius=15)
         text_surface = self.font.render(self.text, True, WHITE)
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)
@@ -339,4 +340,7 @@ class TextRenderer:
 
 
 if __name__ == "__main__":
-    print(Level1.story.format(PLAYER_NAME="Yuan"))
+    # print(Level1.story.format(PLAYER_NAME="Yuan"))
+    y = random.randint(int(INFO_HEIGHT//BLOCK_SIZE), (SCREEN_HEIGHT - BLOCK_SIZE) // BLOCK_SIZE) * BLOCK_SIZE
+    print(int(INFO_HEIGHT//BLOCK_SIZE))
+    print((SCREEN_HEIGHT - BLOCK_SIZE) // BLOCK_SIZE)
