@@ -82,9 +82,9 @@ green=(0,255,0) #RGB
 
 x=pygame.init()
 #size of display width,height and block(that builds up snake)
-display_w=300
-display_h=300
-block_s=10
+display_w=1000
+display_h=900
+block_s=50
 
 gameD=pygame.display.set_mode((display_w,display_h))	#'gameD' is main game screen
 pygame.display.set_caption("new game snake")
