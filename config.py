@@ -17,7 +17,7 @@ DARK_SLATE_GRAY = (47, 79, 79)
 
 # ----------------------------------- 物件大小 ----------------------------------- #
 SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 800
+SCREEN_HEIGHT = 900
 SCREEN_CENTER = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
 
@@ -41,9 +41,12 @@ STORY_HEIGHT = 600
 NEXT_LEVEL_WIDTH = 300
 NEXT_LEVEL_HEIGHT = 50
 
+INFO_HEIGHT = 50
+
+
 
 BLOCK_SIZE = 50
-FPS = 10
+FPS = 60
 
 # ----------------------------------- 關卡和食物 ---------------------------------- #
 class Recap:
