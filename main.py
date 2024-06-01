@@ -33,9 +33,9 @@ next_level_render = TextRenderer(
     font_infor,
     text_color=SILVER,
 )
-score_render = TextRenderer(10, 10, 200, 50, font_story, text_color=DARK_GRAY)
+score_render = TextRenderer(10, 10, 500, 50, font_story, text_color=DARK_GRAY)
 target_food_render = TextRenderer(
-    SCREEN_WIDTH // 2 - INTRO_GAP, 10, 800, 50, font_story, text_color=DARK_GRAY
+    SCREEN_WIDTH // 2 - INTRO_GAP + INTRO_GAP*2, 10, 800, 50, font_story, text_color=DARK_GRAY
 )
 
 start_button = Button(
@@ -376,7 +376,6 @@ def game_loop():
         ):
             game_over_screen()
 
-        # ! TODO: 分數計算問題
         for food_item in food.foods:
             if snake.get_rect().colliderect(
                 pygame.Rect(food_item["x"], food_item["y"], food.size, food.size)
@@ -384,11 +383,11 @@ def game_loop():
                 if food_item["name"] == food.target_food[0]:  # 如果吃到了目標食物
                     snake.grow()
                     score += 1
-                    total_score = score + total_score
+                    total_score += 1
                 else:  # 如果吃到了錯誤的食物
                     snake.shrink()
                     score -= 2
-                    total_score = score + total_score
+                    total_score -= 2
                 if score >= 3:
                     score = 0
                     level += 1
@@ -404,7 +403,7 @@ def game_loop():
         snake.draw()
         food.draw()
 
-        score_render.draw_text(screen, "Score:" + str(total_score))
+        score_render.draw_text(screen, "Toatal Score:" + str(total_score) + " Level:" + str(level) + " Score:" + str(score))
         target_food_render.draw_text(screen, "Food: " + food.target_food[0])
 
         pygame.display.update()
