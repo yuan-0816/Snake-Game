@@ -1,3 +1,5 @@
+# pyinstaller --noconsole --onefile  --icon="E:/code training/python/Snake-Game/material/icon.ico" .\main.py -p .\config.py
+
 import pygame
 import random
 import sys
