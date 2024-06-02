@@ -248,6 +248,7 @@ def game_intro(level, player_name="Player"):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
+                    button_sound.play()
                     intro = False
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -264,9 +265,11 @@ def login():
             player_name = text_input.handle_event(event)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if exit_button.is_clicked(event.pos):
+                    button_sound.play()
                     pygame.quit()
                     sys.exit()
                 if start_button.is_clicked(event.pos):
+                    button_sound.play()
                     login = False
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -284,11 +287,6 @@ def generate_position() -> tuple:
     y = round(random.randrange(0, SCREEN_HEIGHT - BLOCK_SIZE) / BLOCK_SIZE) * BLOCK_SIZE
     return (x, y)
 
-
-class Loss:
-    title = None
-    story = "Desafortunadamente, {level} prueba fracasada.：（ ¿Te gustaría retomar tu aventura con Don Quijote?"
-    food = None
 
 
 def game_over_screen(current_level):
@@ -425,8 +423,8 @@ def game_loop():
         snake.draw()
         food.draw()
 
-        score_render.draw_text(screen, " Level:" + str(level) + " Score:" + str(score))
-        target_food_render.draw_text(screen, "Food: " + food.target_food[0])
+        score_render.draw_text(screen, " Prueba:" + str(level) + " Puntos:" + str(score))
+        target_food_render.draw_text(screen, "Instrucción: " + food.target_food[0])
 
         pygame.display.update()
 

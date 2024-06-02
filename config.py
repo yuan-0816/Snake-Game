@@ -60,6 +60,9 @@ FPS = 60
 # 第五關：quinta
 
 error_sound = pygame.mixer.Sound("./material/sound/error.wav")
+type_sound = pygame.mixer.Sound("./material/sound/type.wav")
+button_sound = pygame.mixer.Sound("./material/sound/button.mp3")
+
 
 LEVEL_NAMES = ["primera", "segunda", "tercera", "cuarta", "quinta"]
 
@@ -327,6 +330,7 @@ class TextInputBox:
     def handle_event(self, event) -> str:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
+                button_sound.play()
                 self.active = not self.active
                 if self.text == "Nombre:":
                     self.text = ""
@@ -334,6 +338,7 @@ class TextInputBox:
                 self.active = False
         if event.type == pygame.KEYDOWN:
             if self.active:
+                type_sound.play()
                 if event.key == pygame.K_RETURN:
                     self.active = False
                 elif event.key == pygame.K_BACKSPACE:
