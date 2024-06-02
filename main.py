@@ -8,9 +8,14 @@ level_list = [Recap, Level1, Level2, Level3, Level4, Level5, Conclusion]
 
 pygame.init()
 
+
 # 設置螢幕和時鐘
+pygame.display.set_caption('Alonso Quijano')
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
+pygame_icon = pygame.image.load('./material/food/1_1_alonso_quijano.png')
+pygame.display.set_icon(pygame_icon)
+
 
 # 字體設置
 
@@ -63,13 +68,13 @@ text_input = TextInputBox(
     int(SCREEN_HEIGHT / 2 - TEXT_INPUTBOX_HEIGHT),
     TEXT_INPUTBOX_WIDTH,
     TEXT_INPUTBOX_HEIGHT,
-    "Your name",
+    "Nombre:",
     font_story,
 )
 
 
 class Snake:
-    def __init__(self, speed=8000):
+    def __init__(self, speed=7000):
         self.size = BLOCK_SIZE
         self.body = [[SCREEN_WIDTH // 2, (SCREEN_HEIGHT + INFO_HEIGHT) // 2, None]]
         self.x_change = 0
@@ -199,6 +204,15 @@ class Food:
             if all(
                 [x != segment[0] or y != segment[1] for segment in snake_body]
             ) and all([x != food["x"] or y != food["y"] for food in foods]):
+                head_x, head_y, direction = snake_body[0]
+                if direction == "LEFT" and (head_x - 3 * BLOCK_SIZE <= x < head_x) and head_y == y:
+                    continue
+                if direction == "RIGHT" and (head_x < x <= head_x + 3 * BLOCK_SIZE) and head_y == y:
+                    continue
+                if direction == "UP" and head_x == x and (head_y - 3 * BLOCK_SIZE <= y < head_y):
+                    continue
+                if direction == "DOWN" and head_x == x and (head_y < y <= head_y + 3 * BLOCK_SIZE):
+                    continue
                 return x, y
 
     def random_food(self):
@@ -269,12 +283,18 @@ def generate_position() -> tuple:
     return (x, y)
 
 
-def game_over_screen():
+class Loss:
+    title = None
+    story = "Desafortunadamente, {level} prueba fracasada.：（ ¿Te gustaría retomar tu aventura con Don Quijote?"
+    food = None
+
+
+def game_over_screen(current_level):
     while True:
         screen.fill(LIGHT_GRAY)
         story_render.draw_text(
             screen,
-            "Desafortunadamente, x prueba fracasada.:( ¿Te gustaría retomar tu aventura con Don Quijote?",
+            f"Desafortunadamente, {LEVEL_NAMES[current_level-1]} prueba fracasada. :(\n¿Te gustaría retomar tu aventura con Don Quijote?",
         )
         TextRenderer(
             SCREEN_WIDTH - NEXT_LEVEL_WIDTH * 2,
@@ -333,9 +353,9 @@ def game_win_screen():
 
 
 def game_loop():
+
     game_over = False
     level = 0
-    total_score = 0
     score = 0
 
     player_name = login()
@@ -366,7 +386,7 @@ def game_loop():
                     snake.update_direction(0, snake.size, "DOWN")
 
         if snake.move(delta_t):
-            game_over_screen()
+            game_over_screen(level)
 
         if (
             snake.body[0][0] < 0
@@ -374,21 +394,21 @@ def game_loop():
             or snake.body[0][1] < INFO_HEIGHT
             or snake.body[0][1] >= SCREEN_HEIGHT
         ):
-            game_over_screen()
+            game_over_screen(level)
 
         for food_item in food.foods:
             if snake.get_rect().colliderect(
                 pygame.Rect(food_item["x"], food_item["y"], food.size, food.size)
             ):
                 if food_item["name"] == food.target_food[0]:  # 如果吃到了目標食物
+                    level_list[level].food_sound[food.target_food[0]].play()
                     snake.grow()
                     score += 1
-                    total_score += 1
                 else:  # 如果吃到了錯誤的食物
+                    error_sound.play()
                     snake.shrink()
                     score -= 2
-                    total_score -= 2
-                if score >= 3:
+                if score >= 15:
                     score = 0
                     level += 1
                     snake.init()
@@ -403,13 +423,13 @@ def game_loop():
         snake.draw()
         food.draw()
 
-        score_render.draw_text(screen, "Toatal Score:" + str(total_score) + " Level:" + str(level) + " Score:" + str(score))
+        score_render.draw_text(screen, " Level:" + str(level) + " Score:" + str(score))
         target_food_render.draw_text(screen, "Food: " + food.target_food[0])
 
         pygame.display.update()
 
         if score <= -1:
-            game_over_screen()
+            game_over_screen(level)
 
         
 

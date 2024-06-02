@@ -1,5 +1,9 @@
 import pygame
 import sys
+import ctypes
+import time
+import os
+import re
 
 
 
@@ -240,6 +244,64 @@ def gamel():
 
 	gamel()
 
+
+
+
+def get_keyboard_layout():
+    # Get the handle of the foreground window
+    hwnd = ctypes.windll.user32.GetForegroundWindow()
+    
+    # Get the thread ID of the foreground window
+    thread_id = ctypes.windll.user32.GetWindowThreadProcessId(hwnd, None)
+    
+    # Get the keyboard layout for that thread
+    layout_id = ctypes.windll.user32.GetKeyboardLayout(thread_id)
+    
+    # Extract the language ID from the layout ID
+    language_id = layout_id & (2**16 - 1)
+    
+    # Convert the language ID to a hexadecimal string
+    return hex(language_id)
+
+def switch_to_english():
+    # 0x0409 is the hexadecimal identifier for English (United States)
+    english_layout = 0x0409
+    hwnd = ctypes.windll.user32.GetForegroundWindow()
+    thread_id = ctypes.windll.user32.GetWindowThreadProcessId(hwnd, None)
+    ctypes.windll.user32.PostThreadMessageW(thread_id, 0x50, 0, english_layout)
+
+def main_loop():
+    last_status = None
+    while True:
+        current_status = get_keyboard_layout()
+        if current_status != last_status:
+            if current_status != '0x409':  # If not English (United States)
+                print("Switching to English (United States) input method.")
+                switch_to_english()
+            else:
+                print("Current input method is English (United States).")
+            last_status = current_status
+        time.sleep(0.5)  # Check every 0.5 seconds
+
+
+
+
+def change_file_name(folder_path):
+	
+
+	for file_name in os.listdir(folder_path):
+		new_file_name = re.sub(r'(?<!^)(?=[A-Z])', '', file_name).lower()
+		if file_name!= new_file_name:
+			os.rename(os.path.join(folder_path, file_name), os.path.join(folder_path, new_file_name))
+			print(f"Renamed {file_name} to {new_file_name}.")
+
+		else:
+			print(f"{file_name} is already in lowercase.")
+
+
+
 if __name__ == '__main__':
 	# gamel()
-	color_show()
+	# color_show()
+	# main_loop()
+	change_file_name("material/sound")
