@@ -207,14 +207,14 @@ class Level3:
 
 class Level4:
     title = "Cuarta prueba: La batalla contra los cueros de vino"
-    story = "Acompañado por el cura, el barbero, la princesa Micomicona y Sancho, Don Quijote finalizó su penitencia en Sierra Morena, y todos fueron a la venta de Juan Palomeque para pasar la noche. Mientras los huéspedes escuchaban al cura leyendo un libro de caballería sacado del baúl del ventero, de repente oyeron a Sancho pidiendo ayuda, porque don Quijote empezó otra guerra. Esta vez se trató de una batalla contra los cueros de vino del ventero en pleno sueño de nuestro caballero. Pensó que los cueros de vino eran las cabezas de los gigantes. Para eliminar a los diablos que le perseguían, metió cuchilladas a los cueros y provocó ríos de sangre por el desván. ¡Ven a detener esta farsa!"
+    story = "Acompañado por el cura, el barbero, la princesa Micomicona y Sancho, Don Quijote finalizó su penitencia en Sierra Morena, y todos fueron a la venta de Juan Palomeque para pasar la noche. Mientras los huéspedes escuchaban al cura leyendo un libro de caballería sacado del baúl del ventero, de repente oyeron a Sancho pidiendo ayuda, porque don Quijote empezó otra guerra. Esta vez se trató de una batalla contra los cueros de vino del ventero en pleno sueño de nuestro caballero. Pensó que los cueros de vino eran las cabezas de los gigantes. Para eliminar a los diablos que le perseguían, metió cuchilladas a los cueros y provocó ríos de sangre por el desván. ¡Vayamos a detener esta farsa!"
 
     food_img = {
         "cura y barbero": pygame.image.load("./material/food/4_1_cura_y_barbero.png"),  # 牧師和理髮師
         "venta de Juan Palomeque": pygame.image.load("./material/food/4_2_venta_de_Juan_Palomeque.png"),  # 旅店
         "baúl de libros de caballería": pygame.image.load("./material/food/4_3_baul_de_libros_de_caballeria.png"),  # 寶藏箱
         "desván": pygame.image.load("./material/food/4_4_desvan.png"),  # 閣樓
-        "cuchillada de espada": pygame.image.load("./material/food/4_5_cuchillada_de_espada.png"),  # 劍
+        "espada": pygame.image.load("./material/food/4_5_cuchillada_de_espada.png"),  # 劍
         "cabeza de gigante": pygame.image.load("./material/food/4_6_cabeza_de_gigante.png"),  # 巨人的頭
         "cuero de vino": pygame.image.load("./material/food/4_7_cuero_de_vino.png"),  # 酒囊
         "río de sangre": pygame.image.load("./material/food/4_8_rio_de_sangre.jpg"),  # 血河
@@ -227,7 +227,7 @@ class Level4:
         "venta de Juan Palomeque": pygame.mixer.Sound("./material/sound/4_2_venta_de_Juan_Palomeque.wav"),  # 旅店
         "baúl de libros de caballería": pygame.mixer.Sound("./material/sound/4_3_baul_de_libros_de_caballeria.wav"),  # 寶藏箱
         "desván": pygame.mixer.Sound("./material/sound/4_4_desvan.wav"),  # 閣樓
-        "cuchillada de espada": pygame.mixer.Sound("./material/sound/4_5_cuchillada_de_espada.wav"),  # 劍
+        "espada": pygame.mixer.Sound("./material/sound/4_5_espada.wav"),  # 劍
         "cabeza de gigante": pygame.mixer.Sound("./material/sound/4_6_cabeza_de_gigante.wav"),  # 巨人的頭
         "cuero de vino": pygame.mixer.Sound("./material/sound/4_7_cuero_de_vino.wav"),  # 酒囊
         "río de sangre": pygame.mixer.Sound("./material/sound/4_8_rio_de_sangre.wav"),  # 血河
@@ -240,7 +240,7 @@ class Level4:
         "venta de Juan Palomeque",
         "baúl de libros de caballería",
         "desván",
-        "cuchillada de espada",
+        "espada",
         "cabeza de gigante",
         "cuero de vino",
         "río de sangre",
