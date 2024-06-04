@@ -23,7 +23,7 @@ HEART_RED = (219, 99, 99)
 
 INFO_HEIGHT = 60
 
-SCREEN_WIDTH = 1000
+SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 800 + INFO_HEIGHT
 SCREEN_CENTER = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
@@ -74,7 +74,7 @@ class Recap:
 
 class Level1:
     title = "Primera prueba: Preparación"
-    story = "Don Quijote se prepara para emprender sus aventuras ¡Conozcamos a algunos de los personajes principales de la historia y los objetos que deben preparar antes de la partida!"
+    story = "    Don Quijote se prepara para emprender sus aventuras ¡Conozcamos a algunos de los personajes principales de la historia y los objetos que deben preparar antes de la partida!"
 
     food_img = {
         "Alonso Quijano": pygame.image.load("./material/food/1_1_alonso_quijano.png"),                  # 唐吉軻德
@@ -120,7 +120,7 @@ class Level1:
 
 class Level2:
     title = "Segunda prueba: La aventura de los molinos de viento"
-    story = "Por el campo de Montiel, Don Quijote y su escudero encontraron decenas de molinos de viento con aspas enormes. Don Quijote pensó que el Mago Frestón convirtió los molinos de viento en unos gigantes malignos que no paraban de mover sus brazos, por eso quiso entrar en batalla contra ellos. ¡Ayudemos a Don Quijote a derrotar a los enemigos que viven en su imaginación!"
+    story = "    Por el campo de Montiel, Don Quijote y su escudero encontraron decenas de molinos de viento con aspas enormes. Don Quijote pensó que el Mago Frestón convirtió los molinos de viento en unos gigantes malignos que no paraban de mover sus brazos, por eso quiso entrar en batalla contra ellos. ¡Ayudemos a Don Quijote a derrotar a los enemigos que viven en su imaginación!"
 
     food_img = {
         "molinos de viento": pygame.image.load("./material/food/2_1_molinos_de_viento.png"),  # 風車
@@ -163,7 +163,7 @@ class Level2:
 
 class Level3:
     title = "Tercera prueba: La batalla de los rebaños de ovejas"
-    story = "Una mañana, cuando Don Quijote estaba caminando, vio desde una loma gran polvareda y en seguida escuchaba el tocar de clarín y tambor, y pensó que fue el pagano Alifanfarón y su ejército que venían a combatir contra Pentapolín del Arremangado Brazo, porque el primero se enamoró de la hija del segundo y quería secuestrar a la bella joven. Don Quijote estaba del lado de Pentapolín, pero en realidad el ejército era un rebaño de ovejas inocentes. ¿Estás listo/a para afrontar este desafío?"
+    story = "    Una mañana, cuando Don Quijote estaba caminando, vio desde una loma gran polvareda y en seguida escuchaba el tocar de clarín y tambor, y pensó que fue el pagano Alifanfarón y su ejército que venían a combatir contra Pentapolín del Arremangado Brazo, porque el primero se enamoró de la hija del segundo y quería secuestrar a la bella joven. Don Quijote estaba del lado de Pentapolín, pero en realidad el ejército era un rebaño de ovejas inocentes. ¿Estás listo/a para afrontar este desafío?"
 
     food_img = {
         "loma": pygame.image.load("./material/food/3_1_loma.png"),  # 山丘
@@ -207,7 +207,7 @@ class Level3:
 
 class Level4:
     title = "Cuarta prueba: La batalla contra los cueros de vino"
-    story = "Acompañado por el cura, el barbero, la princesa Micomicona y Sancho, Don Quijote finalizó su penitencia en Sierra Morena, y todos fueron a la venta de Juan Palomeque para pasar la noche. Mientras los huéspedes escuchaban al cura leyendo un libro de caballería sacado del baúl del ventero, de repente oyeron a Sancho pidiendo ayuda, porque don Quijote empezó otra guerra. Esta vez se trató de una batalla contra los cueros de vino del ventero en pleno sueño de nuestro caballero. Pensó que los cueros de vino eran las cabezas de los gigantes. Para eliminar a los diablos que le perseguían, metió cuchilladas a los cueros y provocó ríos de sangre por el desván. ¡Vayamos a detener esta farsa!"
+    story = "    Acompañado por el cura, el barbero, la princesa Micomicona y Sancho, Don Quijote finalizó su penitencia en Sierra Morena, y todos fueron a la venta de Juan Palomeque para pasar la noche. Mientras los huéspedes escuchaban al cura leyendo un libro de caballería sacado del baúl del ventero, de repente oyeron a Sancho pidiendo ayuda, porque don Quijote empezó otra guerra.\n    Esta vez se trató de una batalla contra los cueros de vino del ventero en pleno sueño de nuestro caballero. Pensó que los cueros de vino eran las cabezas de los gigantes. Para eliminar a los diablos que le perseguían, metió cuchilladas a los cueros y provocó ríos de sangre por el desván. ¡Vayamos a detener esta farsa!"
 
     food_img = {
         "cura y barbero": pygame.image.load("./material/food/4_1_cura_y_barbero.png"),  # 牧師和理髮師
@@ -251,7 +251,7 @@ class Level4:
 
 class Level5:
     title = "Quinta prueba: La última batalla con el Caballero de la Blanca Luna"
-    story = "Bajo la cuidadosa planificación de su amigo aldeano, Sansón Carrasco, Don Quijote encontró al Caballero de la Blanca Luna que sostenía un escudo con dibujo de luna en la playa de Barcelona. Vino a competir porque se enteró de las hazañas heroicas de Don Quijote y pidió que el vencido tuviera que regresar a su pueblo natal y que no pudiera volver a la aventura del caballero durante un año. Además, tenía que aceptar que había mujeres más bellas que Dulcinea en el mundo. Don Quijote aceptó el reto de mala gana."
+    story = "    Bajo la cuidadosa planificación de su amigo aldeano, Sansón Carrasco, Don Quijote encontró al Caballero de la Blanca Luna que sostenía un escudo con dibujo de luna en la playa de Barcelona. Vino a competir porque se enteró de las hazañas heroicas de Don Quijote y pidió que el vencido tuviera que regresar a su pueblo natal y que no pudiera volver a la aventura del caballero durante un año. Además, tenía que aceptar que había mujeres más bellas que Dulcinea en el mundo. Don Quijote aceptó el reto de mala gana."
 
     food_img = {
         "playa de Barcelona": pygame.image.load("./material/food/5_1_playa_de_Barcelona.png"),  # 巴塞隆納海邊
@@ -295,7 +295,7 @@ class Level5:
 
 class Conclusion:
     title = None
-    story = "Don Quijote perdió este duelo decisivo y regresó a su pueblo natal como había prometido. Después de regresar, sufrió fiebre alta y estuvo reposando en cama durante varios días. Un día despertó repentinamente y dijo a todos que él ya no era Don Quijote, sino Alonso Quĳano. Sintió que se estaba muriendo, por lo que comenzó a hacer testamento, dejando su herencia a su sobrina y a Sancho. Tres días después, Alonso Quijano puso fin a su legendaria vida."
+    story = "    Don Quijote perdió este duelo decisivo y regresó a su pueblo natal como había prometido. Después de regresar, sufrió fiebre alta y estuvo reposando en cama durante varios días. Un día despertó repentinamente y dijo a todos que él ya no era Don Quijote, sino Alonso Quijano. Sintió que se estaba muriendo, por lo que comenzó a hacer testamento, dejando su herencia a su sobrina y a Sancho. Tres días después, Alonso Quijano puso fin a su legendaria vida."
     food = None
 
 

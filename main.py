@@ -21,7 +21,7 @@ pygame.display.set_icon(pygame_icon)
 
 # 字體設置
 
-font_title = pygame.font.Font("./material/YatraOne_Regular.ttf", 45)
+font_title = pygame.font.Font("./material/YatraOne_Regular.ttf", 35)
 font_story = pygame.font.Font("./material/YatraOne_Regular.ttf", 30)
 font_infor = pygame.font.Font("./material/YatraOne_Regular.ttf", 23)
 
@@ -42,7 +42,7 @@ next_level_render = TextRenderer(
 )
 score_render = TextRenderer(10, 10, 500, 50, font_story, text_color=DARK_GRAY)
 target_food_render = TextRenderer(
-    SCREEN_WIDTH // 2 - INTRO_GAP, 10, 900, 50, font_story, text_color=DARK_GRAY
+    SCREEN_WIDTH // 2 - 100, 10, 900, 50, font_story, text_color=DARK_GRAY
 )
 
 start_button = Button(
@@ -243,7 +243,7 @@ def game_intro(level, player_name="Player"):
             screen, level_list[level].story.format(PLAYER_NAME=player_name)
         )
         next_level_render.draw_text(
-            screen, "presione la tecla espacio para continuar"
+            screen, "Presione la tecla espacio para continuar"
         )  # press any key to continue
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
