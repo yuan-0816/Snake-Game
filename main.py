@@ -42,7 +42,7 @@ next_level_render = TextRenderer(
 )
 score_render = TextRenderer(10, 10, 500, 50, font_story, text_color=DARK_GRAY)
 target_food_render = TextRenderer(
-    SCREEN_WIDTH // 2 - INTRO_GAP + INTRO_GAP*2, 10, 800, 50, font_story, text_color=DARK_GRAY
+    SCREEN_WIDTH // 2 - INTRO_GAP, 10, 900, 50, font_story, text_color=DARK_GRAY
 )
 
 start_button = Button(
