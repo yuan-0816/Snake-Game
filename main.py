@@ -294,7 +294,7 @@ def game_over_screen(current_level):
         screen.fill(LIGHT_GRAY)
         story_render.draw_text(
             screen,
-            f"Desafortunadamente, {LEVEL_NAMES[current_level-1]} prueba fracasada. :(\n¿Te gustaría retomar tu aventura con Don Quijote?",
+            f"Desafortunadamente, {LEVEL_NAMES[current_level-1]} prueba fracasada. :(\n¿Te gustaría retomar la aventura con Don Quijote?",
         )
         TextRenderer(
             SCREEN_WIDTH - NEXT_LEVEL_WIDTH * 2,
